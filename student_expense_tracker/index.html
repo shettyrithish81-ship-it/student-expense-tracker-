@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Expense Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">STUDENT TOOLKIT</p>
+      <h1>Expense Tracker</h1>
+      <p class="subtitle">Keep track of where your money goes.</p>
+    </div>
+    <div class="date-chip" id="today"></div>
+  </header>
+
+  <main class="container">
+    <section class="panel auth-panel" id="authPanel">
+      <div class="section-heading"><div><p class="eyebrow">SUPABASE ACCOUNT</p><h2>Sign in to save your expenses</h2></div></div>
+      <form id="authForm">
+        <label for="authEmail">Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" autocomplete="email" required>
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" placeholder="At least 6 characters" minlength="6" autocomplete="current-password" required>
+        <div class="form-row auth-actions">
+          <button class="primary-button" type="submit" id="signInButton">Sign in</button>
+          <button class="text-button" type="button" id="signUpButton">Create account</button>
+        </div>
+        <p class="form-note" id="authMessage" role="status"></p>
+      </form>
+    </section>
+    <section class="panel account-bar" id="accountBar" hidden>
+      <span>Signed in as <strong id="currentUser"></strong></span>
+      <button class="text-button" id="signOutButton" type="button">Sign out</button>
+    </section>
+    <section class="summary-grid" aria-label="Expense summary">
+      <article class="summary-card">
+        <span class="card-label">Total expenses</span>
+        <strong id="totalAmount">₹0.00</strong>
+        <small>All recorded spending</small>
+      </article>
+      <article class="summary-card">
+        <span class="card-label">This month</span>
+        <strong id="monthAmount">₹0.00</strong>
+        <small>Spending this month</small>
+      </article>
+      <article class="summary-card">
+        <span class="card-label">Transactions</span>
+        <strong id="transactionCount">0</strong>
+        <small>Expenses recorded</small>
+      </article>
+    </section>
+
+    <section class="content-grid">
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">NEW ENTRY</p>
+            <h2>Add an expense</h2>
+          </div>
+        </div>
+        <form id="expenseForm">
+          <label for="title">Expense name</label>
+          <input id="title" name="title" type="text" placeholder="e.g. Lunch" maxlength="60" required>
+
+          <div class="form-row">
+            <div>
+              <label for="amount">Amount (₹)</label>
+              <input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="150" required>
+            </div>
+            <div>
+              <label for="category">Category</label>
+              <select id="category" name="category">
+                <option>Food</option>
+                <option>Travel</option>
+                <option>Books</option>
+                <option>College</option>
+                <option>Shopping</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="date">Date</label>
+          <input id="date" name="date" type="date" required>
+          <button class="primary-button" type="submit">Add expense</button>
+          <p class="form-note" id="formMessage" role="status"></p>
+        </form>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OVERVIEW</p>
+            <h2>Spending by category</h2>
+          </div>
+        </div>
+        <div id="categoryChart" class="category-chart">
+          <p class="empty-state">Add an expense to see your category breakdown.</p>
+        </div>
+        <div id="categoryLegend" class="legend"></div>
+      </section>
+    </section>
+
+    <section class="panel transactions-panel">
+      <div class="section-heading transactions-heading">
+        <div>
+          <p class="eyebrow">YOUR RECORDS</p>
+          <h2>Recent expenses</h2>
+        </div>
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Search expenses..." aria-label="Search expenses">
+          <select id="filterCategory" aria-label="Filter by category">
+            <option value="All">All categories</option>
+            <option>Food</option><option>Travel</option><option>Books</option>
+            <option>College</option><option>Shopping</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Expense</th><th>Category</th><th>Date</th><th class="amount-cell">Amount</th><th></th></tr>
+          </thead>
+          <tbody id="expenseList">
+            <tr><td colspan="5" class="empty-state">No expenses yet. Add your first expense above.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer-row">
+        <span id="shownCount">Showing 0 expenses</span>
+        <button id="clearAll" class="text-button" type="button">Clear all expenses</button>
+      </div>
+    </section>
+    <p class="privacy-note">Your expenses are securely stored in your Supabase account.</p>
+  </main>
+
+  <script src="supabase-config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
